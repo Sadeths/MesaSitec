@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D75F6FE4-244F-45D7-BF53-2781CA1C534C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesaSitec.Api", "src\MesaSitec.Api\MesaSitec.Api.csproj", "{6E997730-DE38-428B-B696-62CDEAE1BBD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesaSitec.Aplicacion", "src\MesaSitec.Aplicacion\MesaSitec.Aplicacion.csproj", "{14A1E115-31A3-4D1A-BF3A-336ED7226C89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesaSitec.Dominio", "src\MesaSitec.Dominio\MesaSitec.Dominio.csproj", "{11E4705E-70A4-46FC-8AD7-C89407DF0227}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesaSitec.Infraestructura", "src\MesaSitec.Infraestructura\MesaSitec.Infraestructura.csproj", "{EEF16062-2CB0-4811-BA79-2ECC361A4ABD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F74DED52-8506-43AB-88D2-FF1D3E2246E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesaSitec.UnitTests", "tests\MesaSitec.UnitTests\MesaSitec.UnitTests.csproj", "{FE630B1F-3182-4469-AA36-3DACC09E681D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E997730-DE38-428B-B696-62CDEAE1BBD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E997730-DE38-428B-B696-62CDEAE1BBD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E997730-DE38-428B-B696-62CDEAE1BBD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E997730-DE38-428B-B696-62CDEAE1BBD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14A1E115-31A3-4D1A-BF3A-336ED7226C89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14A1E115-31A3-4D1A-BF3A-336ED7226C89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14A1E115-31A3-4D1A-BF3A-336ED7226C89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14A1E115-31A3-4D1A-BF3A-336ED7226C89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11E4705E-70A4-46FC-8AD7-C89407DF0227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E4705E-70A4-46FC-8AD7-C89407DF0227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E4705E-70A4-46FC-8AD7-C89407DF0227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E4705E-70A4-46FC-8AD7-C89407DF0227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF16062-2CB0-4811-BA79-2ECC361A4ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF16062-2CB0-4811-BA79-2ECC361A4ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF16062-2CB0-4811-BA79-2ECC361A4ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF16062-2CB0-4811-BA79-2ECC361A4ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE630B1F-3182-4469-AA36-3DACC09E681D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE630B1F-3182-4469-AA36-3DACC09E681D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE630B1F-3182-4469-AA36-3DACC09E681D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE630B1F-3182-4469-AA36-3DACC09E681D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6E997730-DE38-428B-B696-62CDEAE1BBD0} = {D75F6FE4-244F-45D7-BF53-2781CA1C534C}
+		{14A1E115-31A3-4D1A-BF3A-336ED7226C89} = {D75F6FE4-244F-45D7-BF53-2781CA1C534C}
+		{11E4705E-70A4-46FC-8AD7-C89407DF0227} = {D75F6FE4-244F-45D7-BF53-2781CA1C534C}
+		{EEF16062-2CB0-4811-BA79-2ECC361A4ABD} = {D75F6FE4-244F-45D7-BF53-2781CA1C534C}
+		{FE630B1F-3182-4469-AA36-3DACC09E681D} = {F74DED52-8506-43AB-88D2-FF1D3E2246E7}
+	EndGlobalSection
+EndGlobal
