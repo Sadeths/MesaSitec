@@ -5,7 +5,7 @@ public enum EstadoSolicitud
     Nueva,
     Asignada,
     EnProceso,
-    Resulta,
+    Resuelta,
     Cerrada,
     Cancelada
 }

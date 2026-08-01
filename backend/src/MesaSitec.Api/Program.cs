@@ -1,3 +1,4 @@
+using MesaSitec.Infraestructura.Persistencia.Semilla;
 using MesaSitec.Infraestructura;
 using MesaSitec.Infraestructura.Persistencia;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,13 @@ await using (var alcance = app.Services.CreateAsyncScope())
 
 
     await dbContext.Database.MigrateAsync();
+
+    string? fechaBaseSemilla = 
+        builder.Configuration ["SEED_FECHA_BASE"];
+    
+    await DatosSemilla.SembrarAsync(
+        dbContext,
+        fechaBaseSemilla);
 }
 
 await app.RunAsync();
