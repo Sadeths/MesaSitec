@@ -6,6 +6,8 @@ using MesaSitec.Infraestructura.Persistencia;
 using MesaSitec.Infraestructura.Seguridad;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MesaSitec.Aplicacion.Solicitudes;
+using MesaSitec.Infraestructura.Solicitudes;
 
 namespace MesaSitec.Infraestructura;
 
@@ -33,6 +35,10 @@ public static class Dependencias
         servicios.AddScoped<
             ICategoriaServicio,
             CategoriaServicio>();
+        
+        servicios.AddScoped<
+            ISolicitudConsultaServicio,
+            SolicitudConsultaServicio>();
 
         return servicios;
     }
