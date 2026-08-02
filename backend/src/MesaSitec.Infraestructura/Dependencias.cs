@@ -35,10 +35,20 @@ public static class Dependencias
         servicios.AddScoped<
             ICategoriaServicio,
             CategoriaServicio>();
-        
+
         servicios.AddScoped<
             ISolicitudConsultaServicio,
             SolicitudConsultaServicio>();
+
+        servicios.AddScoped<
+            ISolicitudCreacionServicio,
+            SolicitudCreacionServicio>();
+        
+        servicios.AddScoped<
+            ISolicitudDetalleServicio,
+            SolicitudDetalleServicio>();
+
+
 
         return servicios;
     }
