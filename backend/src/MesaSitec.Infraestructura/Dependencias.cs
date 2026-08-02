@@ -47,6 +47,10 @@ public static class Dependencias
         servicios.AddScoped<
             ISolicitudDetalleServicio,
             SolicitudDetalleServicio>();
+        
+        servicios.AddScoped<
+            ISolicitudEdicionServicio,
+            SolicitudEdicionServicio>();
 
 
 
