@@ -25,11 +25,15 @@ public sealed class SolicitudesController : ControllerBase
     private readonly ISolicitudEdicionServicio
         _solicitudEdicionServicio;
 
+    private readonly ISolicitudTransicionServicio
+        _solicitudTransicionServicio;
+
     public SolicitudesController(
         ISolicitudConsultaServicio solicitudConsultaServicio,
         ISolicitudCreacionServicio solicitudCreacionServicio,
         ISolicitudDetalleServicio solicitudDetalleServicio,
-        ISolicitudEdicionServicio solicitudEdicionServicio)
+        ISolicitudEdicionServicio solicitudEdicionServicio,
+        ISolicitudTransicionServicio solicitudTransicionServicio)
     {
         _solicitudConsultaServicio =
             solicitudConsultaServicio;
@@ -42,9 +46,11 @@ public sealed class SolicitudesController : ControllerBase
 
         _solicitudEdicionServicio =
             solicitudEdicionServicio;
+
+        _solicitudTransicionServicio =
+            solicitudTransicionServicio;
     }
 
-    // GET /api/v1/solicitudes
     [HttpGet]
     [ProducesResponseType<SolicitudListadoRespuesta>(
         StatusCodes.Status200OK)]
@@ -87,7 +93,6 @@ public sealed class SolicitudesController : ControllerBase
         return Ok(respuesta);
     }
 
-    // POST /api/v1/solicitudes
     [HttpPost]
     [ProducesResponseType<SolicitudDetalleRespuesta>(
         StatusCodes.Status201Created)]
@@ -108,16 +113,7 @@ public sealed class SolicitudesController : ControllerBase
 
         if (errores.Count > 0)
         {
-            return ProblemasApi.Crear(
-                status:
-                    StatusCodes.Status422UnprocessableEntity,
-                type:
-                    "https://mesasitec.local/errores/validacion",
-                title: "Error de validación",
-                detail:
-                    "Uno o más campos contienen errores.",
-                codigo: "VALIDACION",
-                errores: errores);
+            return CrearErrorValidacion(errores);
         }
 
         SolicitudCreacionResultado resultado =
@@ -134,16 +130,8 @@ public sealed class SolicitudesController : ControllerBase
 
         if (resultado.Errores.Count > 0)
         {
-            return ProblemasApi.Crear(
-                status:
-                    StatusCodes.Status422UnprocessableEntity,
-                type:
-                    "https://mesasitec.local/errores/validacion",
-                title: "Error de validación",
-                detail:
-                    "Uno o más campos contienen errores.",
-                codigo: "VALIDACION",
-                errores: resultado.Errores);
+            return CrearErrorValidacion(
+                resultado.Errores);
         }
 
         SolicitudDetalleRespuesta respuesta =
@@ -154,7 +142,6 @@ public sealed class SolicitudesController : ControllerBase
             respuesta);
     }
 
-    // GET /api/v1/solicitudes/{id}
     [HttpGet("{id:guid}")]
     [ProducesResponseType<SolicitudDetalleRespuesta>(
         StatusCodes.Status200OK)]
@@ -180,20 +167,12 @@ public sealed class SolicitudesController : ControllerBase
 
         if (solicitud is null)
         {
-            return ProblemasApi.Crear(
-                status: StatusCodes.Status404NotFound,
-                type:
-                    "https://mesasitec.local/errores/recurso-no-encontrado",
-                title: "Recurso no encontrado",
-                detail:
-                    "La solicitud indicada no existe.",
-                codigo: "RECURSO_NO_ENCONTRADO");
+            return CrearErrorNoEncontrado();
         }
 
         return Ok(solicitud);
     }
 
-    // PUT /api/v1/solicitudes/{id}
     [HttpPut("{id:guid}")]
     [ProducesResponseType<SolicitudDetalleRespuesta>(
         StatusCodes.Status200OK)]
@@ -215,16 +194,7 @@ public sealed class SolicitudesController : ControllerBase
 
         if (errores.Count > 0)
         {
-            return ProblemasApi.Crear(
-                status:
-                    StatusCodes.Status422UnprocessableEntity,
-                type:
-                    "https://mesasitec.local/errores/validacion",
-                title: "Error de validación",
-                detail:
-                    "Uno o más campos contienen errores.",
-                codigo: "VALIDACION",
-                errores: errores);
+            return CrearErrorValidacion(errores);
         }
 
         SolicitudEdicionResultado resultado =
@@ -238,40 +208,121 @@ public sealed class SolicitudesController : ControllerBase
 
         if (resultado.NoEncontrada)
         {
-            return ProblemasApi.Crear(
-                status: StatusCodes.Status404NotFound,
-                type:
-                    "https://mesasitec.local/errores/recurso-no-encontrado",
-                title: "Recurso no encontrado",
-                detail:
-                    "La solicitud indicada no existe.",
-                codigo: "RECURSO_NO_ENCONTRADO");
+            return CrearErrorNoEncontrado();
         }
 
         if (resultado.OperacionNoPermitida)
         {
-            return ProblemasApi.Crear(
-                status: StatusCodes.Status403Forbidden,
-                type:
-                    "https://mesasitec.local/errores/operacion-no-permitida",
-                title: "Operación no permitida",
-                detail:
-                    "El usuario no tiene permiso para editar esta solicitud.",
-                codigo: "OPERACION_NO_PERMITIDA");
+            return CrearErrorOperacionNoPermitida(
+                "El usuario no tiene permiso para editar esta solicitud.");
         }
 
         if (resultado.Errores.Count > 0)
+        {
+            return CrearErrorValidacion(
+                resultado.Errores);
+        }
+
+        return Ok(resultado.Solicitud);
+    }
+
+    [HttpPost("{id:guid}/transiciones")]
+    [ProducesResponseType<SolicitudDetalleRespuesta>(
+        StatusCodes.Status200OK)]
+    public async Task<IActionResult> EjecutarTransicion(
+        Guid id,
+        [FromBody] SolicitudTransicionPeticion peticion,
+        CancellationToken cancellationToken)
+    {
+        if (!TryObtenerUsuarioActual(
+                out Guid usuarioId,
+                out Guid tenantId,
+                out RolUsuario rol))
+        {
+            return CrearErrorNoAutenticado();
+        }
+
+        Dictionary<string, string[]> errores =
+            SolicitudTransicionValidador.Validar(peticion);
+
+        if (errores.Count > 0)
+        {
+            return CrearErrorValidacion(errores);
+        }
+
+        SolicitudTransicionResultado resultado =
+            await _solicitudTransicionServicio
+                .EjecutarAsync(
+                    id,
+                    tenantId,
+                    usuarioId,
+                    rol,
+                    peticion,
+                    cancellationToken);
+
+        if (resultado.NoEncontrada)
+        {
+            return CrearErrorNoEncontrado();
+        }
+
+        if (resultado.OperacionNoPermitida)
+        {
+            return CrearErrorOperacionNoPermitida(
+                "El usuario no tiene permiso para ejecutar esta acción.");
+        }
+
+        if (resultado.TransicionInvalida)
+        {
+            return ProblemasApi.Crear(
+                status: StatusCodes.Status409Conflict,
+                type:
+                    "https://mesasitec.local/errores/transicion-invalida",
+                title: "Transición inválida",
+                detail:
+                    $"No se puede aplicar '{peticion.Accion}' sobre el estado actual de la solicitud.",
+                codigo: "TRANSICION_INVALIDA");
+        }
+
+        if (resultado.AgenteInvalido)
         {
             return ProblemasApi.Crear(
                 status:
                     StatusCodes.Status422UnprocessableEntity,
                 type:
-                    "https://mesasitec.local/errores/validacion",
-                title: "Error de validación",
+                    "https://mesasitec.local/errores/agente-invalido",
+                title: "Agente inválido",
                 detail:
-                    "Uno o más campos contienen errores.",
-                codigo: "VALIDACION",
-                errores: resultado.Errores);
+                    "El agente no existe, está inactivo, pertenece a otra organización o no tiene un rol permitido.",
+                codigo: "AGENTE_INVALIDO",
+                errores:
+                    new Dictionary<string, string[]>
+                    {
+                        ["agenteId"] =
+                        [
+                            "Debe indicar un agente o administrador activo de la misma organización."
+                        ]
+                    });
+        }
+
+        if (resultado.MotivoRequerido)
+        {
+            return ProblemasApi.Crear(
+                status:
+                    StatusCodes.Status422UnprocessableEntity,
+                type:
+                    "https://mesasitec.local/errores/motivo-requerido",
+                title: "Motivo requerido",
+                detail:
+                    "La acción requiere un motivo con la longitud mínima establecida.",
+                codigo: "MOTIVO_REQUERIDO",
+                errores:
+                    new Dictionary<string, string[]>
+                    {
+                        ["motivo"] =
+                        [
+                            "Resolver requiere al menos 20 caracteres y cancelar requiere al menos 10."
+                        ]
+                    });
         }
 
         return Ok(resultado.Solicitud);
@@ -308,7 +359,9 @@ public sealed class SolicitudesController : ControllerBase
         return usuarioIdValido &&
                tenantIdValido &&
                rolValido &&
-               Enum.IsDefined(rol);
+               Enum.IsDefined(
+                   typeof(RolUsuario),
+                   rol);
     }
 
     private IActionResult CrearErrorNoAutenticado()
@@ -321,5 +374,44 @@ public sealed class SolicitudesController : ControllerBase
             detail:
                 "El token no contiene los datos requeridos.",
             codigo: "NO_AUTENTICADO");
+    }
+
+    private IActionResult CrearErrorNoEncontrado()
+    {
+        return ProblemasApi.Crear(
+            status: StatusCodes.Status404NotFound,
+            type:
+                "https://mesasitec.local/errores/recurso-no-encontrado",
+            title: "Recurso no encontrado",
+            detail:
+                "La solicitud indicada no existe.",
+            codigo: "RECURSO_NO_ENCONTRADO");
+    }
+
+    private IActionResult CrearErrorOperacionNoPermitida(
+        string detail)
+    {
+        return ProblemasApi.Crear(
+            status: StatusCodes.Status403Forbidden,
+            type:
+                "https://mesasitec.local/errores/operacion-no-permitida",
+            title: "Operación no permitida",
+            detail: detail,
+            codigo: "OPERACION_NO_PERMITIDA");
+    }
+
+    private IActionResult CrearErrorValidacion(
+        Dictionary<string, string[]> errores)
+    {
+        return ProblemasApi.Crear(
+            status:
+                StatusCodes.Status422UnprocessableEntity,
+            type:
+                "https://mesasitec.local/errores/validacion",
+            title: "Error de validación",
+            detail:
+                "Uno o más campos contienen errores.",
+            codigo: "VALIDACION",
+            errores: errores);
     }
 }

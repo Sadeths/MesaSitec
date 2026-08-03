@@ -2,8 +2,10 @@ namespace MesaSitec.Dominio.Enums;
 
 public enum AccionSolicitud
 {
-    Baja,
-    Media,
-    Alta, 
-    Critica
+    Asignar,
+    Iniciar,
+    Resolver,
+    Cerrar,
+    Reabrir,
+    Cancelar
 }
