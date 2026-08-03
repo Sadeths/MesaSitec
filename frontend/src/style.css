@@ -1,0 +1,57 @@
+:root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #172033; background: #f4f6fa; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: .4rem; font-size: clamp(1.75rem, 4vw, 2.35rem); letter-spacing: -.04em; }
+h2 { font-size: 1.1rem; }
+label { display: grid; gap: .45rem; font-weight: 650; color: #344054; }
+input, select, textarea { width: 100%; border: 1px solid #d0d5dd; border-radius: 9px; padding: .72rem .8rem; background: white; color: #172033; outline: none; }
+input:focus, select:focus, textarea:focus { border-color: #3867d6; box-shadow: 0 0 0 3px #3867d620; }
+.barra { height: 68px; padding: 0 max(1rem, calc((100vw - 1180px) / 2)); display: flex; align-items: center; justify-content: space-between; background: #172033; color: white; }
+.marca { color: white; text-decoration: none; font-size: 1.25rem; font-weight: 800; }
+.usuario-nav { display: flex; align-items: center; gap: .7rem; }
+.rol { font-size: .78rem; color: #b9c2d5; border: 1px solid #46516a; padding: .2rem .5rem; border-radius: 999px; }
+.contenedor { max-width: 1180px; margin: 0 auto; padding: 2.2rem 1rem 4rem; }
+.seccion-angosta { max-width: 850px; margin: auto; }
+.tarjeta { background: white; border: 1px solid #e5e9f0; border-radius: 14px; box-shadow: 0 8px 30px #2735510b; }
+.encabezado-pagina { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.3rem; gap: 1rem; }
+.eyebrow { margin-bottom: .25rem; text-transform: uppercase; letter-spacing: .12em; color: #3867d6; font-size: .75rem; font-weight: 800; }
+.texto-suave { color: #667085; }
+.boton { border: 0; border-radius: 9px; padding: .68rem 1rem; font-weight: 700; }
+.boton:disabled { opacity: .5; cursor: not-allowed; }
+.primario { background: #3867d6; color: white; }
+.primario:hover:not(:disabled) { background: #2d55b4; }
+.secundario { background: #eef1f6; color: #344054; }
+.ancho { width: 100%; }
+.login { min-height: calc(100vh - 5rem); display: grid; place-items: center; }
+.login-tarjeta { width: min(430px, 100%); padding: 2rem; display: grid; gap: 1.15rem; }
+.filtros { display: grid; grid-template-columns: 2fr repeat(4, 1fr) auto; gap: .7rem; padding: 1rem; margin-bottom: 1rem; }
+.estado { padding: 3rem 1rem; text-align: center; color: #667085; }
+.tabla-contenedor { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: .9rem .8rem; border-bottom: 1px solid #edf0f5; text-align: left; white-space: nowrap; }
+th { color: #667085; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: #f8faff; }
+.badge { display: inline-block; padding: .25rem .55rem; border-radius: 999px; background: #eef3ff; color: #315bb9; font-size: .76rem; font-weight: 750; }
+.peligro { background: #fff0f0; color: #ba2d2d; }
+.paginacion { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.2rem; }
+.formulario { padding: 1.5rem; display: grid; gap: 1.2rem; }
+.columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.acciones-formulario { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .5rem; }
+.error { color: #b42318; }
+.alerta { padding: .8rem 1rem; border-radius: 9px; background: #f1f5ff; color: #315bb9; }
+.alerta.error { background: #fff0f0; color: #b42318; }
+.detalle { padding: 1.5rem; }
+.detalle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; margin-bottom: 1.2rem; }
+.detalle-grid div { display: grid; gap: .25rem; }
+.detalle-grid small { color: #667085; }
+.descripcion { line-height: 1.7; white-space: pre-wrap; }
+hr { border: 0; border-top: 1px solid #edf0f5; margin: 1.5rem 0; }
+.modal-fondo { position: fixed; inset: 0; background: #10182899; display: grid; place-items: center; padding: 1rem; z-index: 10; }
+.modal { width: min(500px, 100%); padding: 1.5rem; display: grid; gap: 1rem; }
+.toast:empty { display: none; }
+@media (max-width: 900px) { .filtros { grid-template-columns: 1fr 1fr; } .detalle-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .usuario-nav > span { display: none; } .contenedor { padding-top: 1.3rem; } .filtros, .columnas, .detalle-grid { grid-template-columns: 1fr; } .encabezado-pagina { align-items: flex-start; } .paginacion { font-size: .82rem; gap: .4rem; } }

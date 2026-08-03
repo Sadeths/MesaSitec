@@ -19,23 +19,6 @@ public static class SolicitudTransicionValidador
             return errores;
         }
 
-        bool accionValida =
-            Enum.TryParse<AccionSolicitud>(
-                peticion.Accion,
-                ignoreCase: true,
-                out AccionSolicitud accion) &&
-            Enum.IsDefined(
-                typeof(AccionSolicitud),
-                accion);
-
-        if (!accionValida)
-        {
-            errores["accion"] =
-            [
-                "La acción debe ser asignar, iniciar, resolver, cerrar, reabrir o cancelar."
-            ];
-        }
-
         return errores;
     }
 }

@@ -2,15 +2,15 @@ namespace MesaSitec.Aplicacion.Autenticacion;
 
 public sealed class UsuarioRespuesta
 {
-    public Guid Id {get; set;}
+    public Guid Id { get; set; }
 
-    public string Nombre {get; set;} = string.Empty;
+    public string Nombre { get; set; } = string.Empty;
 
-    public string Email {get; set;} = string.Empty;
+    public string Email { get; set; } = string.Empty;
 
-    public string Rol {get; set;} = string.Empty;
+    public string Rol { get; set; } = string.Empty;
 
-    public Guid TenantId {get; set;}
+    public Guid TenantId { get; set; }
 
-    public string TenantNombre {get; set;} = string.Empty;
+    public string TenantNombre { get; set; } = string.Empty;
 }

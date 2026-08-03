@@ -12,7 +12,7 @@ public sealed class TenantConfiguracion
         builder.ToTable("Tenants");
 
         builder.HasKey(Tenant => Tenant.Id);
-        
+
         builder.Property(tenant => tenant.Nombre)
             .IsRequired()
             .HasMaxLength(150);

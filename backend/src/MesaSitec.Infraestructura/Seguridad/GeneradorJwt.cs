@@ -22,15 +22,15 @@ public sealed class GeneradorJwt : IGeneradorJwt
             new(
                 JwtRegisteredClaimNames.Sub,
                 datos.UsuarioId.ToString()),
-            
+
             new(
                 "tenantId",
                 datos.TenantId.ToString()),
-            
+
             new(
                 "rol",
                 datos.Rol),
-            
+
             new(
                 JwtRegisteredClaimNames.Email,
                 datos.Email),
@@ -42,21 +42,21 @@ public sealed class GeneradorJwt : IGeneradorJwt
 
         var llave = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_secreto));
-        
+
         var credenciales = new SigningCredentials(
                 llave,
                 SecurityAlgorithms.HmacSha256);
-        
+
         DateTime fechaExpiracion = DateTime.UtcNow.AddSeconds(
             JwtConfiguracion.ExpiracionSegundos);
-        
+
         var token = new JwtSecurityToken(
             issuer: JwtConfiguracion.Emisor,
             audience: JwtConfiguracion.Audiencia,
             claims: claims,
             expires: fechaExpiracion,
             signingCredentials: credenciales);
-        
+
         return new JwtSecurityTokenHandler()
             .WriteToken(token);
     }

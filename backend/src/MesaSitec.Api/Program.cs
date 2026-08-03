@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using MesaSitec.Api.Errores;
 using MesaSitec.Infraestructura;
 using MesaSitec.Infraestructura.Persistencia;
 using MesaSitec.Infraestructura.Persistencia.Semilla;
@@ -11,7 +12,33 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .ConfigureApiBehaviorOptions(opciones =>
+    {
+        opciones.InvalidModelStateResponseFactory = contexto =>
+        {
+            Dictionary<string, string[]> errores = contexto.ModelState
+                .Where(item => item.Value?.Errors.Count > 0)
+                .ToDictionary(
+                    item => string.IsNullOrWhiteSpace(item.Key)
+                        ? "peticion"
+                        : char.ToLowerInvariant(item.Key[0]) + item.Key[1..],
+                    item => item.Value!.Errors
+                        .Select(error => string.IsNullOrWhiteSpace(error.ErrorMessage)
+                            ? "El valor enviado no es válido."
+                            : error.ErrorMessage)
+                        .ToArray());
+
+            return ProblemasApi.Crear(
+                StatusCodes.Status422UnprocessableEntity,
+                "https://mesasitec.local/errores/validacion",
+                "Error de validación",
+                "Uno o más campos contienen errores.",
+                "VALIDACION",
+                errores);
+        };
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -152,11 +179,21 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(opciones =>
+{
+    opciones.AddPolicy(
+        "Frontend",
+        politica => politica
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 var app = builder.Build();
-
+app.UseMiddleware<ManejadorGlobalExcepciones>();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 

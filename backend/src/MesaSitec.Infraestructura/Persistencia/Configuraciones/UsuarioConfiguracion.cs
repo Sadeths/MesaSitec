@@ -13,23 +13,23 @@ public sealed class UsuarioConfiguracion
 
         builder.HasKey(usuario => usuario.Id);
 
-        builder.Property(Usuario=> Usuario.Email)
+        builder.Property(Usuario => Usuario.Email)
             .IsRequired()
             .HasMaxLength(320);
 
         builder.Property(usuario => usuario.PasswordHash)
             .IsRequired()
             .HasMaxLength(500);
-        
+
         builder.Property(usuario => usuario.Nombre)
             .IsRequired()
             .HasMaxLength(150);
-        
+
         builder.Property(usuario => usuario.Rol)
             .IsRequired()
             .HasConversion<string>()
             .HasMaxLength(20);
-        
+
         builder.Property(usuario => usuario.Activo)
             .IsRequired();
 
@@ -37,7 +37,7 @@ public sealed class UsuarioConfiguracion
             .IsUnique();
 
         builder.HasIndex(usuario => usuario.TenantId);
-        
+
         builder.HasOne(usuario => usuario.Tenant)
             .WithMany()
             .HasForeignKey(usuario => usuario.TenantId)

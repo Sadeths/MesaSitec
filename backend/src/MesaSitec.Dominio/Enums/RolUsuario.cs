@@ -3,6 +3,6 @@ namespace MesaSitec.Dominio.Enums;
 public enum RolUsuario
 {
     Admin,
-    Agente, 
+    Agente,
     Solicitante
 }

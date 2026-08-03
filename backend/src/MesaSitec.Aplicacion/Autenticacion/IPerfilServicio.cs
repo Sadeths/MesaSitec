@@ -6,5 +6,5 @@ public interface IPerfilServicio
         Guid usuarioId,
         Guid tenantId,
         CancellationToken cancellationToken);
-    
+
 }

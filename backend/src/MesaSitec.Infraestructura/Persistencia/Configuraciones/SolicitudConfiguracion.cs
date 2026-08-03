@@ -22,7 +22,7 @@ public sealed class SolicitudConfiguracion
         builder.Property(solicitud => solicitud.Titulo)
             .IsRequired()
             .HasMaxLength(120);
-        
+
         builder.Property(solicitud => solicitud.Descripcion)
             .IsRequired()
             .HasMaxLength(4000);
@@ -36,13 +36,13 @@ public sealed class SolicitudConfiguracion
             .IsRequired()
             .HasConversion<string>()
             .HasMaxLength(20);
-        
+
         builder.Property(solictud => solictud.MotivoResolucion)
             .HasMaxLength(4000);
 
         builder.Property(solicitud => solicitud.MotivoCancelacion)
             .HasMaxLength(4000);
-        
+
         builder.HasIndex(solicitud => new
         {
             solicitud.TenantId,
@@ -61,12 +61,12 @@ public sealed class SolicitudConfiguracion
             .WithMany()
             .HasForeignKey(solicitud => solicitud.TenantId)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         builder.HasOne(solicitud => solicitud.Categoria)
             .WithMany()
             .HasForeignKey(solicitud => solicitud.CategoriaId)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         builder.HasOne(solicitud => solicitud.Solicitante)
             .WithMany()
             .HasForeignKey(solicitud => solicitud.SolicitanteId)

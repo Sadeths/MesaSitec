@@ -6,8 +6,8 @@ namespace MesaSitec.Infraestructura.Persistencia;
 public sealed class MesaSitecDbContext : DbContext
 {
     public MesaSitecDbContext(
-        DbContextOptions<MesaSitecDbContext>options)
-        : base (options)
+        DbContextOptions<MesaSitecDbContext> options)
+        : base(options)
     {
     }
 

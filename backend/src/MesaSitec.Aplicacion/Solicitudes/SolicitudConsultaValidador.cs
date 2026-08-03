@@ -36,10 +36,11 @@ public static class SolicitudConsultaValidador
         }
 
         if (!string.IsNullOrWhiteSpace(consulta.Estado) &&
-            !Enum.TryParse<EstadoSolicitud>(
-                consulta.Estado,
-                ignoreCase: true,
-                out _))
+            (!Enum.TryParse<EstadoSolicitud>(
+                 consulta.Estado,
+                 ignoreCase: true,
+                 out EstadoSolicitud estado) ||
+             !Enum.IsDefined(estado)))
         {
             errores["estado"] =
             [
@@ -48,10 +49,11 @@ public static class SolicitudConsultaValidador
         }
 
         if (!string.IsNullOrWhiteSpace(consulta.Prioridad) &&
-            !Enum.TryParse<PrioridadSolicitud>(
-                consulta.Prioridad,
-                ignoreCase: true,
-                out _))
+            (!Enum.TryParse<PrioridadSolicitud>(
+                 consulta.Prioridad,
+                 ignoreCase: true,
+                 out PrioridadSolicitud prioridad) ||
+             !Enum.IsDefined(prioridad)))
         {
             errores["prioridad"] =
             [

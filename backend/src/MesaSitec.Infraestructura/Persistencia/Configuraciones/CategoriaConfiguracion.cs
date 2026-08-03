@@ -10,7 +10,7 @@ public sealed class CategoriaConfiguracion
     public void Configure(EntityTypeBuilder<Categoria> builder)
     {
         builder.ToTable("Categorias");
-        
+
         builder.HasKey(categoria => categoria.Id);
 
         builder.Property(categoria => categoria.Nombre)
